@@ -34,6 +34,8 @@ jobs:
       spack-packages-version: ${{ steps.versions.outputs.packages }}
       spack-config-version:  ${{ steps.versions.outputs.config }}
     steps:
+      - uses: actions/checkout@v4
+
       # The next two steps checkout the spack-{packages,config} repos to confirm that the versions in
       # versions.json exist in the repositories.
       - name: Setup
