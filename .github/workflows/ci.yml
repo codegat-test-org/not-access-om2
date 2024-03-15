@@ -102,7 +102,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BODY: |
-            The model version in the `spack.yaml` hasn't been updated (is currently `${{steps.version.outputs.current }}`).
+            The model version in the `spack.yaml` hasn't been updated.
             Either update it manually, or comment the following to have it updated and committed automatically:
             * `!bump major` for feature releases
             * `!bump minor` for bugfixes
