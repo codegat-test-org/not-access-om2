@@ -158,8 +158,8 @@ jobs:
         # same as a regular release build.
         # Ex. 'access-om2@git.2024.01.1' -> '2024.01.1'
         run: |
-          access-om2-package=$(yq e '${{ env.SPACK_YAML_MODEL_YQ }}' spack.yaml)
-          echo "version-name=${access-om2-package/*@git./}" >> $GITHUB_OUTPUT
+          access_om2_package=$(yq e '${{ env.SPACK_YAML_MODEL_YQ }}' spack.yaml)
+          echo "version-name=${access_om2_package/*@git./}" >> $GITHUB_OUTPUT
 
       - name: Generate Version-Build String
         id: get-version-build
@@ -167,8 +167,8 @@ jobs:
         # which looks like: `<version>-<number of commits on this branch>`.
         # Ex. `2024.10.1` with 2 commits on branch -> `2024.10.1-2`.
         run: |
-          number-of-commits=$(git rev-list --count ${{ github.event.pull_request.base.sha }}..HEAD)
-          echo "version-build-name=${{ steps.get-version.outputs.version-name }}-${number-of-commits}" >> $GITHUB_OUTPUT
+          number_of_commits=$(git rev-list --count ${{ github.event.pull_request.base.sha }}..HEAD)
+          echo "version-build-name=${{ steps.get-version.outputs.version-name }}-${number_of_commits}" >> $GITHUB_OUTPUT
 
   update-prerelease-tag:
     name: Update Prerelease Tag ${{ needs.get-versions.outputs.version }}
