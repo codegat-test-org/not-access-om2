@@ -8,7 +8,7 @@ on:
       - config/**
       - spack.yaml
 env:
-  SPACK_YAML_MODEL_YQ: .spack.spec[0]
+  SPACK_YAML_MODEL_YQ: .spack.specs[0]
 jobs:
   # There are a lot of interconnected jobs here. Here is a dependency diagram:
   # validate-json ──> check-json ─────────┬─────────────────────────┐
