@@ -15,8 +15,6 @@ jobs:
     # Get the tag name from the `spack.yaml` that was merged into main, which
     # is of the form `access-om2@git.<version>`.
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     outputs:
       name: ${{ steps.tag.outputs.name }}
     steps:
@@ -25,23 +23,9 @@ jobs:
       - name: Generate Tag
         id: tag
         # Get the tag name from the access-om2 spec in the `spack.yaml`.
-        # The `cut` command splits the `access-om2@git.<version>` field into just `<version>`,
-        # which will be the new tag.
         run: |
           access_om2_package=$(yq e '${{ env.SPACK_YAML_MODEL_YQ }}' spack.yaml)
           echo "name=${access_om2_package/*@git./}" >> $GITHUB_OUTPUT
-
-  undeploy-prereleases:
-    name: Undeploy Prereleases
-    needs:
-      - generate-tag
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Pretending to undeploy prereleases with pattern ${{ needs.generate-tag.outputs.name}}-*"
-    # uses: access-nri/build-cd/.github/workflows/undeploy-1-setup.yml@main
-    # with:
-    #   version-pattern: ${{ needs.generate-tag.outputs.name }}-*
-    # secrets: inherit
 
   push-tag:
     name: Tag Deployment
@@ -56,8 +40,8 @@ jobs:
       - name: Push Tag
         # NOTE: Regarding the config user.name/user.email, see https://github.com/actions/checkout/pull/1184
         run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git config user.name ${{ vars.GH_ACTIONS_BOT_GIT_USER_NAME }}
+          git config user.email ${{ vars.GH_ACTIONS_BOT_GIT_USER_EMAIL }}
           git tag ${{ needs.generate-tag.outputs.name }} --force
           git push --tags --force
 
@@ -68,7 +52,7 @@ jobs:
       - push-tag
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Pretending to deploy to release with ref ${{ github.ref_name }} and version ${{ needs.generate-tag.outputs.name }}"
+      - run: echo "Pretending to deploy with ref ${{ github.ref_name }} with version ${{ needs.generate-tag.outputs.name }}"
     # uses: access-nri/build-cd/.github/workflows/deploy-1-setup.yml@main
     # with:
     #   ref: ${{ github.ref_name }}
