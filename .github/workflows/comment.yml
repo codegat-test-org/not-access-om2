@@ -80,8 +80,8 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
 
-          yq -i '${{ env.SPACK_YAML_MODEL_YQ }} = access-om2@git.${{ steps.bump.outputs.after }}' spack.yaml
-          yq -i '${{ env.SPACK_YAML_MODEL_PROJECTION_YQ }} = {name}/${{ steps.bump.outputs.after }}' spack.yaml
+          yq -i '${{ env.SPACK_YAML_MODEL_YQ }} = "access-om2@git.${{ steps.bump.outputs.after }}"' spack.yaml
+          yq -i '${{ env.SPACK_YAML_MODEL_PROJECTION_YQ }} = "{name}/${{ steps.bump.outputs.after }}"' spack.yaml
           git add spack.yaml
           git commit -m "spack.yaml: Updated access-om2 package version from ${{ steps.setup.outputs.original-version }} to ${{ steps.bump.outputs.after }}"
           git push
