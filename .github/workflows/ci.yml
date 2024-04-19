@@ -36,6 +36,7 @@ jobs:
       model: access-om2
     permissions:
       contents: write
+      pull-requests: write
 
   pr-closed:
     name: Closed
